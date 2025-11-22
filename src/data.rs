@@ -14,12 +14,11 @@ pub enum AssetType {
     CONDITIONAL,
 }
 
-#[allow(clippy::to_string_trait_impl)]
-impl ToString for AssetType {
-    fn to_string(&self) -> String {
+impl Display for AssetType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            AssetType::COLLATERAL => "COLLATERAL".to_string(),
-            AssetType::CONDITIONAL => "CONDITIONAL".to_string(),
+            AssetType::COLLATERAL => write!(f, "COLLATERAL"),
+            AssetType::CONDITIONAL => write!(f, "CONDITIONAL"),
         }
     }
 }

@@ -49,6 +49,11 @@ impl ClobClient {
             ..Default::default()
         }
     }
+    /// Creates a new CLOB client with L1 authentication headers.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the provided private key is invalid or cannot be parsed.
     pub fn with_l1_headers(host: &str, key: &str, chain_id: u64) -> Self {
         let signer = Box::new(
             key.parse::<PrivateKeySigner>()
@@ -64,6 +69,11 @@ impl ClobClient {
         }
     }
 
+    /// Creates a new CLOB client with L2 authentication headers and API credentials.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the provided private key is invalid or cannot be parsed.
     pub fn with_l2_headers(host: &str, key: &str, chain_id: u64, api_creds: ApiCreds) -> Self {
         let signer = Box::new(
             key.parse::<PrivateKeySigner>()
@@ -82,6 +92,12 @@ impl ClobClient {
         self.api_creds = Some(api_creds);
     }
 
+    /// Gets L1 parameters (signer and chain ID).
+    ///
+    /// # Panics
+    ///
+    /// Panics if the signer or chain_id have not been set. Use `with_l1_headers` constructor
+    /// to ensure these are properly initialized.
     #[inline]
     fn get_l1_parameters(&self) -> (&impl EthSigner, u64) {
         let signer = self.signer.as_ref().expect("Signer is not set");
@@ -89,6 +105,12 @@ impl ClobClient {
         (signer, chain_id)
     }
 
+    /// Gets L2 parameters (signer and API credentials).
+    ///
+    /// # Panics
+    ///
+    /// Panics if the signer or API credentials have not been set. Use `with_l2_headers` constructor
+    /// or `set_api_creds` to ensure these are properly initialized.
     #[inline]
     fn get_l2_parameters(&self) -> (&impl EthSigner, &ApiCreds) {
         let signer = self.signer.as_ref().expect("Signer is not set");
